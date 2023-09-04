@@ -1,6 +1,25 @@
-# Quick React Boilerplate
+# Bill Splitter
 
-An opinionated boilerplate made for quick experimentation
+Bill splitter made for quick bill splitting
+
+## Design
+
+### Overview
+
+- Split bill by # of people
+- Enter subtotal (pre-tax)
+- Enter tax/total (post-tax)
+  - Include toggle between tax, or total amount
+- Enter itemized amount
+  - Assign to one, multiple, or all plates
+  - Display remaining total
+- Enter tip
+  - Include toggle between pre-tax or post-tax
+- Display each person's total
+
+### Technical Specs
+
+- Tax & tip should be assigned proportionally based on an individual's check
 
 ## Stack
 
