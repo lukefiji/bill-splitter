@@ -1,4 +1,4 @@
-import clsxMerge from '@/utils/clsxMerge';
+import { Button } from '@/components/ui/button';
 import { useCallback } from 'react';
 import { Updater } from 'use-immer';
 import { SplitBill } from './App';
@@ -27,24 +27,12 @@ const SplitSelector = ({ setBills }: Props) => {
 
   return (
     <div className="flex justify-center gap-4">
-      <button
-        onClick={handleRemove}
-        className={clsxMerge([
-          'rounded-full border-2 border-solid border-slate-800',
-          'h-12 w-12',
-        ])}
-      >
+      <Button onClick={handleRemove} variant="outline">
         -
-      </button>
-      <button
-        onClick={handleAdd}
-        className={clsxMerge([
-          'rounded-full border-2 border-solid border-slate-800',
-          'h-12 w-12',
-        ])}
-      >
+      </Button>
+      <Button onClick={handleAdd} variant="outline">
         +
-      </button>
+      </Button>
     </div>
   );
 };
