@@ -88,9 +88,10 @@ interface Props {
   number: number;
   selected: boolean;
   onClick: VoidFunction;
+  items: Array<unknown>;
 }
 
-const Plate = ({ number, selected, onClick }: Props) => {
+const Plate = ({ number, selected, onClick, items = [] }: Props) => {
   const colorIdx = (number - 1) % colorClasses.length;
   return (
     <div
@@ -107,12 +108,13 @@ const Plate = ({ number, selected, onClick }: Props) => {
         className={cn([
           'grow rounded-full border-[1px]',
           'shadow-[inset_-2px_2px_4px_rgba(0,0,0,0.1),inset_3px_-3px_4px_rgba(255,255,255,0.5)]',
-          'flex items-center justify-center',
+          'flex flex-col items-center justify-center',
           colorClasses[colorIdx].inner.default,
           selected && colorClasses[colorIdx].inner.selected,
         ])}
       >
-        <div>Check {number}</div>
+        <div>Person {number}</div>
+        <div>{items.length}</div>
       </div>
     </div>
   );
