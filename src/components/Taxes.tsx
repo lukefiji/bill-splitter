@@ -18,14 +18,10 @@ const Taxes = ({ taxState, totalAmountState }: Props) => {
         <TabsTrigger value="totalAmount">Total Amount</TabsTrigger>
       </TabsList>
       <TabsContent value="taxAmount">
-        <AmountInput label="Bill Tax" name="taxAmount" state={taxState} />
+        <AmountInput name="taxAmount" state={taxState} />
       </TabsContent>
       <TabsContent value="totalAmount">
-        <AmountInput
-          label="Total Amount"
-          name="totalAmount"
-          state={totalAmountState}
-        />
+        <AmountInput name="totalAmount" state={totalAmountState} />
       </TabsContent>
     </Tabs>
   );

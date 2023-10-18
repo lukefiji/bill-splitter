@@ -15,7 +15,7 @@ function useFsm() {
 
   const currentStep = STEPS[stepIdx];
 
-  return { currentStep, prevStep, nextStep };
+  return { stepIdx, currentStep, prevStep, nextStep };
 }
 
 export type UseFsmReturn = ReturnType<typeof useFsm>;

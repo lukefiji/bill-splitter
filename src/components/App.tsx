@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
 import useAmountInput from '@/hooks/useAmountInput';
 import useFsm from '@/hooks/useFsm';
 import { USD } from '@dinero.js/currencies';
-import { add, dinero, toDecimal } from 'dinero.js';
+import { add, dinero, greaterThan, toDecimal } from 'dinero.js';
 import { useState } from 'react';
 import { useImmer } from 'use-immer';
 import { FsmStep } from '../hooks/useFsm';
 import AmountInput from './AmountInput';
+import Navigation from './Navigation';
 import Plate from './Plate';
 import SplitSelector from './SplitSelector';
 import Taxes from './Taxes';
@@ -33,7 +33,8 @@ const cardContent: Record<FsmStep, { title: string; subtitle?: string }> = {
 };
 
 function App() {
-  const { currentStep, nextStep, prevStep } = useFsm();
+  const fsmState = useFsm();
+  const { currentStep } = fsmState;
 
   const [bills, setBills] = useImmer<SplitBill>([
     {
@@ -51,6 +52,7 @@ function App() {
   const pretaxState = useAmountInput();
   const taxState = useAmountInput();
   const totalAmountState = useAmountInput();
+  const billItem = useAmountInput();
 
   const pretaxVal = dinero({
     amount: pretaxState[0].floatValue ?? 0,
@@ -63,6 +65,7 @@ function App() {
   });
 
   const total = add(pretaxVal, taxVal);
+  const zero = dinero({ amount: 0, currency: USD });
 
   return (
     <div className="flex min-h-screen w-full justify-center">
@@ -82,38 +85,22 @@ function App() {
           </CardHeader>
           <CardContent>
             <div className="col-span-1 flex flex-col gap-4">
-              {currentStep}
-
               {currentStep === 'PLATES' && (
                 <>
-                  <p className="text-center text-6xl font-semibold">
-                    {bills.length}
-                  </p>
+                  <SplitSelector numBills={bills.length} setBills={setBills} />
 
-                  <SplitSelector setBills={setBills} />
-
-                  <Button variant="outline" onClick={prevStep}>
-                    Previous
-                  </Button>
-                  <Button variant="outline" onClick={nextStep}>
-                    Next
-                  </Button>
+                  <Navigation canProgress fsmState={fsmState} />
                 </>
               )}
 
               {currentStep === 'SUBTOTAL' && (
                 <>
-                  <AmountInput
-                    label="Subtotal (pre-tax)"
-                    name="preTaxAmount"
-                    state={pretaxState}
+                  <AmountInput name="preTaxAmount" state={pretaxState} />
+
+                  <Navigation
+                    canProgress={greaterThan(pretaxVal, zero)}
+                    fsmState={fsmState}
                   />
-                  <Button variant="outline" onClick={prevStep}>
-                    Previous
-                  </Button>
-                  <Button variant="outline" onClick={nextStep}>
-                    Next
-                  </Button>
                 </>
               )}
 
@@ -123,23 +110,19 @@ function App() {
                     taxState={taxState}
                     totalAmountState={totalAmountState}
                   />
-                  <Button variant="outline" onClick={prevStep}>
-                    Previous
-                  </Button>
-                  <Button variant="outline" onClick={nextStep}>
-                    Next
-                  </Button>
+
+                  <Navigation
+                    canProgress={greaterThan(taxVal, zero)}
+                    fsmState={fsmState}
+                  />
                 </>
               )}
 
               {currentStep === 'SPLIT' && (
                 <>
-                  <Button variant="outline" onClick={prevStep}>
-                    Previous
-                  </Button>
-                  <Button variant="outline" onClick={nextStep}>
-                    Next
-                  </Button>
+                  <AmountInput name="billItem" state={billItem} />
+
+                  <Navigation canProgress fsmState={fsmState} />
                 </>
               )}
             </div>

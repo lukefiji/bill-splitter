@@ -13,7 +13,7 @@ const format = (numStr: unknown) => {
 };
 
 interface Props {
-  label: string;
+  label?: string;
   name: string;
   state: UseAmountInputReturn;
 }
@@ -34,9 +34,11 @@ const AmountInput = ({ label, name, state }: Props) => {
   return (
     <div>
       <div>
-        <label htmlFor={name} className="text-sm">
-          {label}
-        </label>
+        {label != null && (
+          <label htmlFor={name} className="text-sm">
+            {label}
+          </label>
+        )}
 
         <NumberFormatBase
           type="text"

@@ -4,10 +4,11 @@ import { Updater } from 'use-immer';
 import { SplitBill } from './App';
 
 interface Props {
+  numBills: number;
   setBills: Updater<SplitBill>;
 }
 
-const SplitSelector = ({ setBills }: Props) => {
+const SplitSelector = ({ numBills, setBills }: Props) => {
   const handleAdd = useCallback(() => {
     setBills((draft) => {
       draft.push({
@@ -15,7 +16,7 @@ const SplitSelector = ({ setBills }: Props) => {
         items: [],
       });
     });
-  }, []);
+  }, [setBills]);
 
   const handleRemove = useCallback(() => {
     setBills((draft) => {
@@ -23,13 +24,14 @@ const SplitSelector = ({ setBills }: Props) => {
         draft.pop();
       }
     });
-  }, []);
+  }, [setBills]);
 
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex items-center justify-center gap-6">
       <Button onClick={handleRemove} variant="outline">
         -
       </Button>
+      <p className="w-15 text-center text-6xl font-semibold">{numBills}</p>
       <Button onClick={handleAdd} variant="outline">
         +
       </Button>
